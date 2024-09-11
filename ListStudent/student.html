@@ -685,57 +685,41 @@
         return date.toLocaleDateString('vi-VN');
       }
 
-      document
-        .getElementById('searchBox')
-        .addEventListener('input', function () {
-          const searchTerm = this.value.toLowerCase();
-          const filteredStudents = students.filter(
-            student =>
-              student.ten.toLowerCase().includes(searchTerm) ||
-              student.lop.toLowerCase().includes(searchTerm),
-          );
-          renderFilteredStudents(filteredStudents);
-        });
+      document.getElementById('searchBox').addEventListener('input', function () {
+  const searchTerm = this.value.toLowerCase();
+  const filteredStudents = students.filter(student =>
+    student.ten.toLowerCase().includes(searchTerm) ||
+    student.lop.toLowerCase().includes(searchTerm)
+  );
+  renderStudentList(filteredStudents);
+});
 
-      function renderFilteredStudents(filteredStudents) {
-        const studentListBody = document.getElementById('studentListBody');
-        studentListBody.innerHTML = '';
-        filteredStudents.forEach((student, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-                    <td data-label="STT">${student.stt}</td>
-                    <td data-label="Lớp học">${student.lop}</td>
-                    <td data-label="Họ tên">${student.ten}</td>
-                    <td data-label="Ngày sinh">${formatDate(
-                      student.ngaySinh,
-                    )}</td>
-                    <td data-label="Giới tính">${student.gioiTinh}</td>
-                    <td data-label="Dân tộc">${student.danToc}</td>
-                    ${student.daDongTien
-                      .map(
-                        (paid, month) => `
-                        <td data-label="Tháng ${month + 1}">
-                            <input type="checkbox" ${
-                              paid ? 'checked' : ''
-                            } onchange="updatePaymentStatus(${students.indexOf(
-                          student,
-                        )}, ${month}, this.checked)">
-                        </td>
-                    `,
-                      )
-                      .join('')}
-                    <td data-label="Hành động">
-                        <button onclick="editStudent(${students.indexOf(
-                          student,
-                        )})">Sửa</button>
-                        <button onclick="deleteStudent(${students.indexOf(
-                          student,
-                        )})">Xóa</button>
-                    </td>
-                `;
-          studentListBody.appendChild(row);
-        });
-      }
+function renderStudentList(studentsToRender = students) {
+  const studentListBody = document.getElementById('studentListBody');
+  studentListBody.innerHTML = '';
+  
+  studentsToRender.forEach((student, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td data-label="STT">${student.stt}</td>
+      <td data-label="Lớp học">${student.lop}</td>
+      <td data-label="Họ tên">${student.ten}</td>
+      <td data-label="Ngày sinh">${formatDate(student.ngaySinh)}</td>
+      <td data-label="Giới tính">${student.gioiTinh}</td>
+      <td data-label="Dân tộc">${student.danToc}</td>
+      ${student.thangDongTien.map((paid, month) => `
+        <td data-label="Tháng ${month + 1}">
+          <input type="checkbox" ${paid ? 'checked' : ''} onchange="updatePaymentStatus(${index}, ${month}, this.checked)">
+        </td>
+      `).join('')}
+      <td data-label="Hành động">
+        <button onclick="editStudent(${index})">Sửa</button>
+        <button onclick="deleteStudent(${index})">Xóa</button>
+      </td>
+    `;
+    studentListBody.appendChild(row);
+  });
+}
       function saveStudentsToLocalStorage() {
         localStorage.setItem('students', JSON.stringify(students));
         }
