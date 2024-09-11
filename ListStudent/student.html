@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống quản lý học sinh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            font-size: 1.5em;
+        }
+        input[type="text"], input[type="password"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #studentList {
+            display: none;
+        }
+        #studentForm {
+            margin-bottom: 20px;
+        }
+        #searchBox {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        #saveAllButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #userInfo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #welcomeMessage {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        #logoutButton {
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        @media screen and (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                margin-bottom: 10px;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            td:before {
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="loginForm">
+        <h1>Đăng nhập giáo viên</h1>
+        <input type="text" id="username" placeholder="Tên đăng nhập">
+        <input type="password" id="password" placeholder="Mật khẩu">
+        <button onclick="login()">Đăng nhập</button>
+    </div>
+
+    <div id="studentList" style="display: none;">
+        <div id="userInfo">
+            <span id="welcomeMessage"></span>
+            <button id="logoutButton" onclick="logout()">Đăng xuất</button>
+        </div>
+
+        <h1>DANH SÁCH HỌC SINH ĐÃ ĐÓNG TIỀN NĂM 2024</h1>
+        
+        <div id="studentForm">
+            <h2>Thêm/Sửa Học Sinh</h2>
+            <input type="hidden" id="editIndex">
+            <input type="text" id="stt" placeholder="STT">
+            <input type="text" id="lop" placeholder="Lớp học">
+            <input type="text" id="ten" placeholder="Họ tên">
+            <input type="date" id="ngaySinh">
+            <input type="text" id="gioiTinh" placeholder="Giới tính">
+            <input type="text" id="danToc" placeholder="Dân tộc">
+            <button onclick="saveStudent()">Lưu</button>
+            <button onclick="cancelEdit()">Hủy</button>
+        </div>
+        
+        <input type="text" id="searchBox" placeholder="Tìm kiếm học sinh...">
+        
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Lớp học</th>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th>Dân tộc</th>
+                    <th>Đã đóng tiền</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="studentListBody"></tbody>
+        </table>
+
+        <button id="saveAllButton" onclick="saveAllPaymentStatus()">Lưu trạng thái đóng tiền</button>
+    </div>
+
+    <script>
+        let students = [];
+        let currentUser = null;
+
+        function loadStudents() {
+            const savedStudents = localStorage.getItem('students');
+            if (savedStudents) {
+                students = JSON.parse(savedStudents);
+            } else {
+                students = [
+                    { stt: 1, lop: "HA1/1", ten: "Lê Bảo An", ngaySinh: "2017-09-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: true },
+                    { stt: 2, lop: "HA1/1", ten: "Ngô Bảo An", ngaySinh: "2017-02-26", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+                    { stt: 3, lop: "HA1/1", ten: "Lê Đức Anh", ngaySinh: "2017-03-31", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+                ];
+                saveStudentsToLocalStorage();
+            }
+        }
+
+        function saveStudentsToLocalStorage() {
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'teacher' && password === '123') {
+                currentUser = username;
+                localStorage.setItem('currentUser', currentUser);
+                showStudentList();
+            } else {
+                alert('Tên đăng nhập hoặc mật khẩu không đúng!');
+            }
+        }
+
+        function showStudentList() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('studentList').style.display = 'block';
+            document.getElementById('welcomeMessage').textContent = `Xin chào, ${currentUser}!`;
+            loadStudents();
+            renderStudentList();
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('studentList').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function renderStudentList() {
+            const studentListBody = document.getElementById('studentListBody');
+            studentListBody.innerHTML = '';
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="STT">${student.stt}</td>
+                    <td data-label="Lớp học">${student.lop}</td>
+                    <td data-label="Họ tên">${student.ten}</td>
+                    <td data-label="Ngày sinh">${formatDate(student.ngaySinh)}</td>
+                    <td data-label="Giới tính">${student.gioiTinh}</td>
+                    <td data-label="Dân tộc">${student.danToc}</td>
+                    <td data-label="Đã đóng tiền"><input type="checkbox" ${student.daDongTien ? 'checked' : ''} onchange="updatePaymentStatus(${index}, this.checked)"></td>
+                    <td data-label="Hành động">
+                        <button onclick="editStudent(${index})">Sửa</button>
+                        <button onclick="deleteStudent(${index})">Xóa</button>
+                    </td>
+                `;
+                studentListBody.appendChild(row);
+            });
+        }
+
+        function updatePaymentStatus(index, paid) {
+            students[index].daDongTien = paid;
+            saveStudentsToLocalStorage();
+        }
+
+        function saveStudent() {
+            const editIndex = document.getElementById('editIndex').value;
+            const student = {
+                stt: document.getElementById('stt').value,
+                lop: document.getElementById('lop').value,
+                ten: document.getElementById('ten').value,
+                ngaySinh: document.getElementById('ngaySinh').value,
+                gioiTinh: document.getElementById('gioiTinh').value,
+                danToc: document.getElementById('danToc').value,
+                daDongTien: false
+            };
+
+            if (editIndex === '') {
+                students.push(student);
+            } else {
+                students[editIndex] = student;
+            }
+
+            saveStudentsToLocalStorage();
+            renderStudentList();
+            clearForm();
+        }
+
+        function editStudent(index) {
+            const student = students[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('stt').value = student.stt;
+            document.getElementById('lop').value = student.lop;
+            document.getElementById('ten').value = student.ten;
+            document.getElementById('ngaySinh').value = student.ngaySinh;
+            document.getElementById('gioiTinh').value = student.gioiTinh;
+            document.getElementById('danToc').value = student.danToc;
+        }
+
+        function deleteStudent(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa học sinh này?')) {
+                students.splice(index, 1);
+                saveStudentsToLocalStorage();
+                renderStudentList();
+            }
+        }
+
+        function cancelEdit() {
+            clearForm();
+        }
+
+        function clearForm() {
+            document.getElementById('editIndex').value = '';
+            document.getElementById('stt').value = '';
+            document.getElementById('lop').value = '';
+            document.getElementById('ten').value = '';
+            document.getElementById('ngaySinh').value = '';
+            document.getElementById('gioiTinh').value = '';
+            document.getElementById('danToc').value = '';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        document.getElementById('searchBox').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filteredStudents = students.filter(student => 
+                student.ten.toLowerCase().includes(searchTerm) ||
+                student.lop.toLowerCase().includes(searchTerm)
+            );
+            renderFilteredStudents(filteredStudents);
+        });
+
+        function renderFilteredStudents(filteredStudents) {
+            const studentListBody = document.getElementById('studentListBody');
+            studentListBody.innerHTML = '';
+            filteredStudents.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="STT">${student.stt}</td>
+                    <td data-label="Lớp học">${student.lop}</td>
+                    <td data-label="Họ tên">${student.ten}</td>
+                    <td data-label="Ngày sinh">${formatDate(student.ngaySinh)}</td>
+                    <td data-label="Giới tính">${student.gioiTinh}</td>
+                    <td data-label="Dân tộc">${student.danToc}</td>
+                    <td data-label="Đã đóng tiền"><input type="checkbox" ${student.daDongTien ? 'checked' : ''} onchange="updatePaymentStatus(${students.indexOf(student)}, this.checked)"></td>
+                    <td data-label="Hành động">
+                        <button onclick="editStudent(${students.indexOf(student)})">Sửa</button>
+                        <button onclick="deleteStudent(${students.indexOf(student)})">Xóa</button>
+                    </td>
+                `;
+                studentListBody.appendChild(row);
+            });
+        }
+
+        function saveAllPaymentStatus() {
+            const checkboxes = document.querySelectorAll('#studentListBody input[type="checkbox"]');
+            checkboxes.forEach((checkbox, index) => {
+                students[index].daDongTien = checkbox.checked;
+            });
+            saveStudentsToLocalStorage();
+            alert('Đã lưu trạng thái đóng tiền cho tất cả học sinh!');
+        }
+
+        // Kiểm tra đăng nhập khi trang được tải
+        window.onload = function() {
+            currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                showStudentList();
+            }
+        };
+    </script>
+</body>
+</html>
