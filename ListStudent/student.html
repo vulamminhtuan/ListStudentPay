@@ -232,17 +232,17 @@
     { stt: 42, lop: "HAI/1", ten: "Huỳnh Ngọc Yến", ngaySinh: "2017-12-29", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
     { stt: 43, lop: "HAI/1", ten: "Hồ Thương Hoàn Vy", ngaySinh: "2017-06-30", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false }
 ]));
-const savedStudents = localStorage.getItem('students');
+const savedStudents = JSON.stringify(localStorage.getItem('students'));
 
     if (savedStudents) {
-        students = JSON.parse(savedStudents);
-        
+        students = savedStudents;
+    
         students = students.map(student => ({
             ...student,
             daDongTien: Array.isArray(student.daDongTien) ? student.daDongTien : Array(12).fill(false)
         }));
     } else {
-        localStorage.setItem ('students', JSON.stringify([
+        [
     { stt: 1, lop: "HAI/1", ten: "Lê Bảo An", ngaySinh: "2017-09-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
     { stt: 2, lop: "HAI/1", ten: "Ngô Bảo An", ngaySinh: "2017-02-26", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
     { stt: 3, lop: "HAI/1", ten: "Lê Đức Anh", ngaySinh: "2017-03-31", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
@@ -286,7 +286,7 @@ const savedStudents = localStorage.getItem('students');
     { stt: 41, lop: "HAI/1", ten: "Đoàn Hà Thảo Uyên", ngaySinh: "2017-04-27", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
     { stt: 42, lop: "HAI/1", ten: "Huỳnh Ngọc Yến", ngaySinh: "2017-12-29", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
     { stt: 43, lop: "HAI/1", ten: "Hồ Thương Hoàn Vy", ngaySinh: "2017-06-30", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false }
-]));
+]
     }
     saveStudentsToLocalStorage();
 }
