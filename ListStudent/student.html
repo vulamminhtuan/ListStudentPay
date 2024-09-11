@@ -198,10 +198,11 @@
       let currentUser = null;
 
       function loadStudents() {
-        if (!localStorage.getItem('students')) {
-          localStorage.setItem(
-            'students',
-            JSON.stringify([
+        const savedStudents = JSON.parse(localStorage.getItem('students'));
+            if (savedStudents) {
+                students = savedStudents;
+            } else {
+                students = [
               {
                 stt: 1,
                 lop: 'HAI/1',
@@ -209,21 +210,7 @@
                 ngaySinh: '2017-09-28',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 2,
                 lop: 'HAI/1',
@@ -231,21 +218,7 @@
                 ngaySinh: '2017-02-26',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 3,
                 lop: 'HAI/1',
@@ -253,21 +226,7 @@
                 ngaySinh: '2017-03-31',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 4,
                 lop: 'HAI/1',
@@ -275,21 +234,7 @@
                 ngaySinh: '2017-06-07',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 5,
                 lop: 'HAI/1',
@@ -297,21 +242,7 @@
                 ngaySinh: '2017-01-23',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 6,
                 lop: 'HAI/1',
@@ -319,21 +250,7 @@
                 ngaySinh: '2016-03-12',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 7,
                 lop: 'HAI/1',
@@ -341,21 +258,7 @@
                 ngaySinh: '2017-09-12',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 8,
                 lop: 'HAI/1',
@@ -363,21 +266,7 @@
                 ngaySinh: '2017-06-09',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 9,
                 lop: 'HAI/1',
@@ -385,21 +274,7 @@
                 ngaySinh: '2017-08-24',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 10,
                 lop: 'HAI/1',
@@ -407,21 +282,7 @@
                 ngaySinh: '2017-10-08',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 11,
                 lop: 'HAI/1',
@@ -429,21 +290,7 @@
                 ngaySinh: '2017-06-12',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 12,
                 lop: 'HAI/1',
@@ -451,21 +298,7 @@
                 ngaySinh: '2017-04-20',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 13,
                 lop: 'HAI/1',
@@ -473,21 +306,7 @@
                 ngaySinh: '2017-05-28',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 14,
                 lop: 'HAI/1',
@@ -495,21 +314,7 @@
                 ngaySinh: '2017-10-01',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 15,
                 lop: 'HAI/1',
@@ -517,21 +322,7 @@
                 ngaySinh: '2017-09-01',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 16,
                 lop: 'HAI/1',
@@ -539,21 +330,7 @@
                 ngaySinh: '2017-05-08',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 17,
                 lop: 'HAI/1',
@@ -561,21 +338,7 @@
                 ngaySinh: '2017-09-14',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 18,
                 lop: 'HAI/1',
@@ -583,21 +346,7 @@
                 ngaySinh: '2017-04-23',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 19,
                 lop: 'HAI/1',
@@ -605,21 +354,7 @@
                 ngaySinh: '2017-01-01',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 20,
                 lop: 'HAI/1',
@@ -627,21 +362,7 @@
                 ngaySinh: '2017-04-30',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 21,
                 lop: 'HAI/1',
@@ -649,21 +370,7 @@
                 ngaySinh: '2017-10-06',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 22,
                 lop: 'HAI/1',
@@ -671,21 +378,7 @@
                 ngaySinh: '2017-09-14',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 23,
                 lop: 'HAI/1',
@@ -693,21 +386,7 @@
                 ngaySinh: '2017-09-14',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 24,
                 lop: 'HAI/1',
@@ -715,21 +394,7 @@
                 ngaySinh: '2017-03-31',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 25,
                 lop: 'HAI/1',
@@ -737,21 +402,7 @@
                 ngaySinh: '2017-10-07',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 26,
                 lop: 'HAI/1',
@@ -759,21 +410,7 @@
                 ngaySinh: '2017-09-22',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 27,
                 lop: 'HAI/1',
@@ -781,21 +418,7 @@
                 ngaySinh: '2017-11-28',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 28,
                 lop: 'HAI/1',
@@ -803,21 +426,7 @@
                 ngaySinh: '2017-09-23',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 29,
                 lop: 'HAI/1',
@@ -825,21 +434,7 @@
                 ngaySinh: '2017-09-11',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 30,
                 lop: 'HAI/1',
@@ -847,21 +442,7 @@
                 ngaySinh: '2017-03-17',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 31,
                 lop: 'HAI/1',
@@ -869,21 +450,7 @@
                 ngaySinh: '2017-10-22',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 32,
                 lop: 'HAI/1',
@@ -891,21 +458,7 @@
                 ngaySinh: '2017-04-10',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 33,
                 lop: 'HAI/1',
@@ -913,21 +466,7 @@
                 ngaySinh: '2017-08-18',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 34,
                 lop: 'HAI/1',
@@ -935,21 +474,7 @@
                 ngaySinh: '2017-09-25',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 35,
                 lop: 'HAI/1',
@@ -957,21 +482,7 @@
                 ngaySinh: '2017-03-10',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 36,
                 lop: 'HAI/1',
@@ -979,21 +490,7 @@
                 ngaySinh: '2017-10-28',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 37,
                 lop: 'HAI/1',
@@ -1001,21 +498,7 @@
                 ngaySinh: '2017-02-28',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 38,
                 lop: 'HAI/1',
@@ -1023,21 +506,7 @@
                 ngaySinh: '2017-07-04',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 39,
                 lop: 'HAI/1',
@@ -1045,21 +514,7 @@
                 ngaySinh: '2017-12-26',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 40,
                 lop: 'HAI/1',
@@ -1067,21 +522,7 @@
                 ngaySinh: '2017-10-24',
                 gioiTinh: 'Nam',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 41,
                 lop: 'HAI/1',
@@ -1089,21 +530,7 @@
                 ngaySinh: '2017-04-27',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 42,
                 lop: 'HAI/1',
@@ -1111,21 +538,7 @@
                 ngaySinh: '2017-12-29',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
+                 thangDongTien: Array(12).fill(false) },
               {
                 stt: 43,
                 lop: 'HAI/1',
@@ -1133,41 +546,12 @@
                 ngaySinh: '2017-06-30',
                 gioiTinh: 'Nữ',
                 danToc: 'Kinh',
-                thangDongTien: [
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                ],
-              },
-            ]),
-          );
+                 thangDongTien: Array(12).fill(false) },
+
+              ];
+              saveStudentsToLocalStorage();
+            }
         }
-        const savedStudents = JSON.parse(localStorage.getItem('students'));
-
-        if (savedStudents) {
-          students = savedStudents;
-
-          // students = students.map(student => ({
-          //     ...student,
-          //     daDongTien: Array.isArray(student.daDongTien) ? student.daDongTien : Array(12).fill(false)
-          // }))}
-        }
-        // saveStudentsToLocalStorage();
-      }
-
-      // function saveStudentsToLocalStorage() {
-      //     localStorage.setItem('students', JSON.stringify(students));
-      // }
-
       function login() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
@@ -1236,14 +620,9 @@
       }
 
       function updatePaymentStatus(index, month, paid) {
-        console.log(paid);
-
         students[index].thangDongTien[month] = paid;
-        console.log(students[index].thangDongTien);
-
-        localStorage.setItem('students', JSON.stringify(students));
-        // saveStudentsToLocalStorage();
-      }
+        saveStudentsToLocalStorage();
+          }
 
       function saveStudent() {
         const editIndex = document.getElementById('editIndex').value;
@@ -1254,14 +633,14 @@
           ngaySinh: document.getElementById('ngaySinh').value,
           gioiTinh: document.getElementById('gioiTinh').value,
           danToc: document.getElementById('danToc').value,
-          daDongTien: Array(12).fill(false),
-        };
+          thangDongTien: Array(12).fill(false),
+            };
 
-        if (editIndex === '') {
-          students.push(student);
-        } else {
-          students[editIndex] = student;
-        }
+            if (editIndex === '') {
+                students.push(student);
+            } else {
+                students[editIndex] = {...students[editIndex], ...student};
+            }
 
         saveStudentsToLocalStorage();
         renderStudentList();
@@ -1357,7 +736,9 @@
           studentListBody.appendChild(row);
         });
       }
-
+      function saveStudentsToLocalStorage() {
+        localStorage.setItem('students', JSON.stringify(students));
+        }
       function saveAllPaymentStatus() {
         const checkboxes = document.querySelectorAll(
           '#studentListBody input[type="checkbox"]',
@@ -1367,9 +748,8 @@
           const month = index % 12;
           students[studentIndex].thangDongTien[month] = checkbox.checked;
         });
-        // saveStudentsToLocalStorage();
-        localStorage.setItem('students', JSON.stringify(students));
-        alert('Đã lưu trạng thái đóng tiền cho tất cả học sinh!');
+        saveStudentsToLocalStorage();
+         alert('Đã lưu trạng thái đóng tiền cho tất cả học sinh!');
       }
 
       function sortStudents(field) {
