@@ -76,27 +76,20 @@
         }
         #saveAllButton {
             display: block;
-            margin: 20px auto;
+            margin: 10px 0;
             padding: 10px 20px;
             font-size: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: #4CAF50;
         }
-        #userInfo {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        #welcomeMessage {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        #logoutButton {
-            padding: 5px 10px;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            background-color: #f0f0f0;
+            padding: 10px 0;
+            z-index: 100;
         }
         @media screen and (max-width: 600px) {
             table, thead, tbody, th, td, tr {
@@ -156,25 +149,37 @@
             <button onclick="cancelEdit()">Hủy</button>
         </div>
         
-        <input type="text" id="searchBox" placeholder="Tìm kiếm học sinh...">
+        <div class="sticky-container">
+            <input type="text" id="searchBox" placeholder="Tìm kiếm học sinh...">
+            <button id="saveAllButton" onclick="saveAllPaymentStatus()">Lưu trạng thái đóng tiền</button>
+        </div>
         
         <table id="studentTable">
             <thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Lớp học</th>
-                    <th>Họ tên</th>
-                    <th>Ngày sinh</th>
-                    <th>Giới tính</th>
-                    <th>Dân tộc</th>
-                    <th>Đã đóng tiền</th>
+                    <th onclick="sortStudents('stt')">STT</th>
+                    <th onclick="sortStudents('lop')">Lớp học</th>
+                    <th onclick="sortStudents('ten')">Họ tên</th>
+                    <th onclick="sortStudents('ngaySinh')">Ngày sinh</th>
+                    <th onclick="sortStudents('gioiTinh')">Giới tính</th>
+                    <th onclick="sortStudents('danToc')">Dân tộc</th>
+                    <th>Tháng 1</th>
+                    <th>Tháng 2</th>
+                    <th>Tháng 3</th>
+                    <th>Tháng 4</th>
+                    <th>Tháng 5</th>
+                    <th>Tháng 6</th>
+                    <th>Tháng 7</th>
+                    <th>Tháng 8</th>
+                    <th>Tháng 9</th>
+                    <th>Tháng 10</th>
+                    <th>Tháng 11</th>
+                    <th>Tháng 12</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
             <tbody id="studentListBody"></tbody>
         </table>
-
-        <button id="saveAllButton" onclick="saveAllPaymentStatus()">Lưu trạng thái đóng tiền</button>
     </div>
 
     <script>
@@ -182,18 +187,107 @@
         let currentUser = null;
 
         function loadStudents() {
-            const savedStudents = localStorage.getItem('students');
-            if (savedStudents) {
-                students = JSON.parse(savedStudents);
-            } else {
-                students = [
-                    { stt: 1, lop: "HA1/1", ten: "Lê Bảo An", ngaySinh: "2017-09-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: true },
-                    { stt: 2, lop: "HA1/1", ten: "Ngô Bảo An", ngaySinh: "2017-02-26", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
-                    { stt: 3, lop: "HA1/1", ten: "Lê Đức Anh", ngaySinh: "2017-03-31", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
-                ];
-                saveStudentsToLocalStorage();
-            }
-        }
+    const savedStudents = localStorage.getItem('students');
+    if (savedStudents) {
+        students = JSON.parse(savedStudents);
+        [
+  { stt: 1, lop: "HAI/1", ten: "Lê Bảo An", ngaySinh: "2017-09-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 2, lop: "HAI/1", ten: "Ngô Bảo An", ngaySinh: "2017-02-26", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 3, lop: "HAI/1", ten: "Lê Đức Anh", ngaySinh: "2017-03-31", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 4, lop: "HAI/1", ten: "Nguyễn Minh Anh", ngaySinh: "2017-06-07", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 5, lop: "HAI/1", ten: "Trương Hoàng Bách", ngaySinh: "2017-01-23", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 6, lop: "HAI/1", ten: "Nguyễn Hoàng Bảo", ngaySinh: "2016-03-12", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 7, lop: "HAI/1", ten: "Lê Nhã Băng", ngaySinh: "2017-09-12", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 8, lop: "HAI/1", ten: "Nguyễn Khánh Bình", ngaySinh: "2017-06-09", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 9, lop: "HAI/1", ten: "Nguyễn Thái Dương", ngaySinh: "2017-08-24", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 10, lop: "HAI/1", ten: "Nguyễn Thị Linh Đan", ngaySinh: "2017-10-08", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 11, lop: "HAI/1", ten: "Nguyễn Quang Đăng", ngaySinh: "2017-06-12", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 12, lop: "HAI/1", ten: "Nguyễn Phú Hào", ngaySinh: "2017-04-20", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 13, lop: "HAI/1", ten: "Nguyễn Gia Hân", ngaySinh: "2017-05-28", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 14, lop: "HAI/1", ten: "Quản Mạnh Hùng", ngaySinh: "2017-10-01", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 15, lop: "HAI/1", ten: "Nguyễn Quang Huy", ngaySinh: "2017-09-01", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 16, lop: "HAI/1", ten: "Nguyễn Gia Khang", ngaySinh: "2017-05-08", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 17, lop: "HAI/1", ten: "Đặng Duy Khánh", ngaySinh: "2017-09-14", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 18, lop: "HAI/1", ten: "Phan Anh Khoa", ngaySinh: "2017-04-23", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 19, lop: "HAI/1", ten: "Phan Nguyễn Tuấn Kiệt", ngaySinh: "2017-01-01", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 20, lop: "HAI/1", ten: "Lê Ngọc Thiên Kim", ngaySinh: "2017-04-30", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 21, lop: "HAI/1", ten: "Trần Võ Thiên Kim", ngaySinh: "2017-10-06", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 22, lop: "HAI/1", ten: "Nguyễn Gia Linh", ngaySinh: "2017-09-14", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 23, lop: "HAI/1", ten: "Lê Phạm Bảo Long", ngaySinh: "2017-09-14", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 24, lop: "HAI/1", ten: "Nguyễn Thị Diễm My", ngaySinh: "2017-03-31", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 25, lop: "HAI/1", ten: "Bùi Tiến Nam", ngaySinh: "2017-10-07", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 26, lop: "HAI/1", ten: "Phạm Ninh Khánh Ngân", ngaySinh: "2017-09-22", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 27, lop: "HAI/1", ten: "Cao Xuân Bảo Ngọc", ngaySinh: "2017-11-28", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 28, lop: "HAI/1", ten: "Trần Phúc Nguyên", ngaySinh: "2017-09-23", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 29, lop: "HAI/1", ten: "Lê Nguyễn Uyên Nhi", ngaySinh: "2017-09-11", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 30, lop: "HAI/1", ten: "Nguyễn Âu Khả Như", ngaySinh: "2017-03-17", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 31, lop: "HAI/1", ten: "Nguyễn Đăng Phát", ngaySinh: "2017-10-22", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 32, lop: "HAI/1", ten: "Nguyễn Khải Phong", ngaySinh: "2017-04-10", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 33, lop: "HAI/1", ten: "Trần Thiên Hồng Phước", ngaySinh: "2017-08-18", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 34, lop: "HAI/1", ten: "Tống Lê Nhã Quỳnh", ngaySinh: "2017-09-25", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 35, lop: "HAI/1", ten: "Nguyễn Bảo Tuệ Tâm", ngaySinh: "2017-03-10", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 36, lop: "HAI/1", ten: "Đặng Đức Thành", ngaySinh: "2017-10-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 37, lop: "HAI/1", ten: "Trần Ngọc Anh Thư", ngaySinh: "2017-02-28", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 38, lop: "HAI/1", ten: "Trương Ngọc Mỹ Tiên", ngaySinh: "2017-07-04", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 39, lop: "HAI/1", ten: "Phạm Trí Tín", ngaySinh: "2017-12-26", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 40, lop: "HAI/1", ten: "Nguyễn Thanh Tùng", ngaySinh: "2017-10-24", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 41, lop: "HAI/1", ten: "Đoàn Hà Thảo Uyên", ngaySinh: "2017-04-27", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 42, lop: "HAI/1", ten: "Huỳnh Ngọc Yến", ngaySinh: "2017-12-29", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 43, lop: "HAI/1", ten: "Hồ Thương Hoàn Vy", ngaySinh: "2017-06-30", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false }
+]
+        students = students.map(student => ({
+            ...student,
+            daDongTien: Array.isArray(student.daDongTien) ? student.daDongTien : Array(12).fill(false)
+        }));
+    } else {
+        [
+  { stt: 1, lop: "HAI/1", ten: "Lê Bảo An", ngaySinh: "2017-09-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 2, lop: "HAI/1", ten: "Ngô Bảo An", ngaySinh: "2017-02-26", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 3, lop: "HAI/1", ten: "Lê Đức Anh", ngaySinh: "2017-03-31", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 4, lop: "HAI/1", ten: "Nguyễn Minh Anh", ngaySinh: "2017-06-07", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 5, lop: "HAI/1", ten: "Trương Hoàng Bách", ngaySinh: "2017-01-23", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 6, lop: "HAI/1", ten: "Nguyễn Hoàng Bảo", ngaySinh: "2016-03-12", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 7, lop: "HAI/1", ten: "Lê Nhã Băng", ngaySinh: "2017-09-12", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 8, lop: "HAI/1", ten: "Nguyễn Khánh Bình", ngaySinh: "2017-06-09", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 9, lop: "HAI/1", ten: "Nguyễn Thái Dương", ngaySinh: "2017-08-24", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 10, lop: "HAI/1", ten: "Nguyễn Thị Linh Đan", ngaySinh: "2017-10-08", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 11, lop: "HAI/1", ten: "Nguyễn Quang Đăng", ngaySinh: "2017-06-12", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 12, lop: "HAI/1", ten: "Nguyễn Phú Hào", ngaySinh: "2017-04-20", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 13, lop: "HAI/1", ten: "Nguyễn Gia Hân", ngaySinh: "2017-05-28", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 14, lop: "HAI/1", ten: "Quản Mạnh Hùng", ngaySinh: "2017-10-01", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 15, lop: "HAI/1", ten: "Nguyễn Quang Huy", ngaySinh: "2017-09-01", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 16, lop: "HAI/1", ten: "Nguyễn Gia Khang", ngaySinh: "2017-05-08", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 17, lop: "HAI/1", ten: "Đặng Duy Khánh", ngaySinh: "2017-09-14", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 18, lop: "HAI/1", ten: "Phan Anh Khoa", ngaySinh: "2017-04-23", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 19, lop: "HAI/1", ten: "Phan Nguyễn Tuấn Kiệt", ngaySinh: "2017-01-01", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 20, lop: "HAI/1", ten: "Lê Ngọc Thiên Kim", ngaySinh: "2017-04-30", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 21, lop: "HAI/1", ten: "Trần Võ Thiên Kim", ngaySinh: "2017-10-06", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 22, lop: "HAI/1", ten: "Nguyễn Gia Linh", ngaySinh: "2017-09-14", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 23, lop: "HAI/1", ten: "Lê Phạm Bảo Long", ngaySinh: "2017-09-14", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 24, lop: "HAI/1", ten: "Nguyễn Thị Diễm My", ngaySinh: "2017-03-31", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 25, lop: "HAI/1", ten: "Bùi Tiến Nam", ngaySinh: "2017-10-07", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 26, lop: "HAI/1", ten: "Phạm Ninh Khánh Ngân", ngaySinh: "2017-09-22", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 27, lop: "HAI/1", ten: "Cao Xuân Bảo Ngọc", ngaySinh: "2017-11-28", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 28, lop: "HAI/1", ten: "Trần Phúc Nguyên", ngaySinh: "2017-09-23", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 29, lop: "HAI/1", ten: "Lê Nguyễn Uyên Nhi", ngaySinh: "2017-09-11", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 30, lop: "HAI/1", ten: "Nguyễn Âu Khả Như", ngaySinh: "2017-03-17", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 31, lop: "HAI/1", ten: "Nguyễn Đăng Phát", ngaySinh: "2017-10-22", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 32, lop: "HAI/1", ten: "Nguyễn Khải Phong", ngaySinh: "2017-04-10", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 33, lop: "HAI/1", ten: "Trần Thiên Hồng Phước", ngaySinh: "2017-08-18", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 34, lop: "HAI/1", ten: "Tống Lê Nhã Quỳnh", ngaySinh: "2017-09-25", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 35, lop: "HAI/1", ten: "Nguyễn Bảo Tuệ Tâm", ngaySinh: "2017-03-10", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 36, lop: "HAI/1", ten: "Đặng Đức Thành", ngaySinh: "2017-10-28", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 37, lop: "HAI/1", ten: "Trần Ngọc Anh Thư", ngaySinh: "2017-02-28", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 38, lop: "HAI/1", ten: "Trương Ngọc Mỹ Tiên", ngaySinh: "2017-07-04", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 39, lop: "HAI/1", ten: "Phạm Trí Tín", ngaySinh: "2017-12-26", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 40, lop: "HAI/1", ten: "Nguyễn Thanh Tùng", ngaySinh: "2017-10-24", gioiTinh: "Nam", danToc: "Kinh", daDongTien: false },
+  { stt: 41, lop: "HAI/1", ten: "Đoàn Hà Thảo Uyên", ngaySinh: "2017-04-27", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 42, lop: "HAI/1", ten: "Huỳnh Ngọc Yến", ngaySinh: "2017-12-29", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false },
+  { stt: 43, lop: "HAI/1", ten: "Hồ Thương Hoàn Vy", ngaySinh: "2017-06-30", gioiTinh: "Nữ", danToc: "Kinh", daDongTien: false }
+]
+    }
+    saveStudentsToLocalStorage();
+}
 
         function saveStudentsToLocalStorage() {
             localStorage.setItem('students', JSON.stringify(students));
@@ -203,7 +297,7 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            if (username === 'teacher' && password === '123') {
+            if (username === 'MinhHiep' && password === '123') {
                 currentUser = username;
                 localStorage.setItem('currentUser', currentUser);
                 showStudentList();
@@ -241,7 +335,11 @@
                     <td data-label="Ngày sinh">${formatDate(student.ngaySinh)}</td>
                     <td data-label="Giới tính">${student.gioiTinh}</td>
                     <td data-label="Dân tộc">${student.danToc}</td>
-                    <td data-label="Đã đóng tiền"><input type="checkbox" ${student.daDongTien ? 'checked' : ''} onchange="updatePaymentStatus(${index}, this.checked)"></td>
+                    ${student.daDongTien.map((paid, month) => `
+                        <td data-label="Tháng ${month + 1}">
+                            <input type="checkbox" ${paid ? 'checked' : ''} onchange="updatePaymentStatus(${index}, ${month}, this.checked)">
+                        </td>
+                    `).join('')}
                     <td data-label="Hành động">
                         <button onclick="editStudent(${index})">Sửa</button>
                         <button onclick="deleteStudent(${index})">Xóa</button>
@@ -251,8 +349,8 @@
             });
         }
 
-        function updatePaymentStatus(index, paid) {
-            students[index].daDongTien = paid;
+        function updatePaymentStatus(index, month, paid) {
+            students[index].daDongTien[month] = paid;
             saveStudentsToLocalStorage();
         }
 
@@ -265,7 +363,7 @@
                 ngaySinh: document.getElementById('ngaySinh').value,
                 gioiTinh: document.getElementById('gioiTinh').value,
                 danToc: document.getElementById('danToc').value,
-                daDongTien: false
+                daDongTien: Array(12).fill(false)
             };
 
             if (editIndex === '') {
@@ -338,7 +436,11 @@
                     <td data-label="Ngày sinh">${formatDate(student.ngaySinh)}</td>
                     <td data-label="Giới tính">${student.gioiTinh}</td>
                     <td data-label="Dân tộc">${student.danToc}</td>
-                    <td data-label="Đã đóng tiền"><input type="checkbox" ${student.daDongTien ? 'checked' : ''} onchange="updatePaymentStatus(${students.indexOf(student)}, this.checked)"></td>
+                    ${student.daDongTien.map((paid, month) => `
+                        <td data-label="Tháng ${month + 1}">
+                            <input type="checkbox" ${paid ? 'checked' : ''} onchange="updatePaymentStatus(${students.indexOf(student)}, ${month}, this.checked)">
+                        </td>
+                    `).join('')}
                     <td data-label="Hành động">
                         <button onclick="editStudent(${students.indexOf(student)})">Sửa</button>
                         <button onclick="deleteStudent(${students.indexOf(student)})">Xóa</button>
@@ -351,10 +453,21 @@
         function saveAllPaymentStatus() {
             const checkboxes = document.querySelectorAll('#studentListBody input[type="checkbox"]');
             checkboxes.forEach((checkbox, index) => {
-                students[index].daDongTien = checkbox.checked;
+                const studentIndex = Math.floor(index / 12);
+                const month = index % 12;
+                students[studentIndex].daDongTien[month] = checkbox.checked;
             });
             saveStudentsToLocalStorage();
             alert('Đã lưu trạng thái đóng tiền cho tất cả học sinh!');
+        }
+
+        function sortStudents(field) {
+            students.sort((a, b) => {
+                if (a[field] < b[field]) return -1;
+                if (a[field] > b[field]) return 1;
+                return 0;
+            });
+            renderStudentList();
         }
 
         // Kiểm tra đăng nhập khi trang được tải
